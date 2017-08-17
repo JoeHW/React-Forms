@@ -25,11 +25,11 @@ const CardList = (props) => {
 };
 
 class Form extends React.Component {
-state = { userName: "" };
+ state = { userName: '' }
   handleSubmit = (event) => {
     event.preventDefault();
     //using axios library
-  axios.get('https://api.github.com/users/${this.state.userName}')
+    axios.get(`https://api.github.com/users/${this.state.userName}`)
        .then(resp => {
          this.props.onSubmit(resp.data);
          this.setState(userName: '');
@@ -56,14 +56,14 @@ class App extends React.Component {
 
 addNewCard = (cardInfo) => {
 this.setState(prevState => ({
-  cards: prevState.cards.concat(cardInfo);
+  cards: prevState.cards.concat(cardInfo)
  }));
 }
 
   render() {
   return (
     <div>
-     <Form onSubmit={addNewCard} />
+     <Form onSubmit={this.addNewCard} />
      <CardList cards={this.state.cards} />
     </div>
   );
