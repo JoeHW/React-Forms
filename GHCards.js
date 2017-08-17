@@ -13,28 +13,35 @@ const Card = (props) => {
   );
 };
 
-let data = [
-{name: "Paul O’Shannessy",
-avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=4",
-company: "Facebook"},
-{name: "Joseph Williamson",
-avatar_url: "https://avatars3.githubusercontent.com/u/26691932?v=4", company: "Rover"}
-];
+// Regular Element selection:  ref={(input) => this.userNameInput = input}
 
 const CardList = (props) => {
   return (
     <div>
-      {props.cards.map(card => <Card {...card} />)}
+      {props.cards.map(card => <Card key={card.id} {...card} />)}
     </div>
   );
 
 };
 
 class Form extends React.Component {
+state = { userName: "" };
+  handleSubmit = (event) => {
+    event.preventDefault();
+    //using axios library
+  axios.get('https://api.github.com/users/${this.state.userName}')
+       .then(resp => {
+         this.props.onSubmit(resp.data);
+         this.setState(userName: '');
+       });
+  };
+
   render() {
   return (
-    <form>
-      <input type="text" placeholder="GitHub Username" />
+    <form onSubmit={this.handleSubmit}>
+      <input type="text" value={this.state.userName}
+      onChange={(event) => this.setState({userName: event.target.value})}
+      placeholder="GitHub Username" />
       <button type="submit">Add Card</button>
     </form>
   );
@@ -43,20 +50,20 @@ class Form extends React.Component {
 
 
 class App extends React.Component {
-state = {
- cards = [
-  { name: "Paul O’Shannessy",
-    avatar_url: "https://avatars1.githubusercontent.com/u/8445?v=4",
-    company: "Facebook"},
-  { name: "Joseph Williamson",
-    avatar_url: "https://avatars3.githubusercontent.com/u/26691932?v=4",
-    company: "Rover"}
-  ]};
+  state = {
+   cards: []
+  };
+
+addNewCard = (cardInfo) => {
+this.setState(prevState => ({
+  cards: prevState.cards.concat(cardInfo);
+ }));
+}
 
   render() {
   return (
     <div>
-     <Form />
+     <Form onSubmit={addNewCard} />
      <CardList cards={this.state.cards} />
     </div>
   );
