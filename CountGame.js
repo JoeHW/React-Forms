@@ -1,11 +1,10 @@
 const Stars = (props) => {
+const numberOfStars = 1 + Math.floor(Math.random()*9);
+//lodash
 return (
    <div className="col-5">
-     <i className="fa fa-star"></i>
-     <i className="fa fa-star"></i>
-     <i className="fa fa-star"></i>
-     <i className="fa fa-star"></i>
-     <i className="fa fa-star"></i>
+    {_.range(numberOfStars).map(i =>
+    <i key={i} className="fa fa-star"></i>)}
    </div>
 )};
 
@@ -19,21 +18,22 @@ return (
 const Answer = (props) => {
 return (
    <div className="col-5">
-   ...
+   <span>5</span>
    </div>
 )};
 
-const Number = (props) => {
+const Numbers = (props) => {
   return (
-   <div className"card text-center">
+   <div className="card text-center">
     <div>
-      <span>1</span>
-      <span className="selected">2</span>
-      <span classNme="used">3</span>
+      {Numbers.list.map((x,i) =>
+      <span id={i}>{x}</span>)}
     </div>
    </div>
  );
 }
+
+Numbers.list = _.range(1,10);
 
 
 class Game extends React.Component {
