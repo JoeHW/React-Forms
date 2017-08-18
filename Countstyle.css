@@ -1,0 +1,32 @@
+.mountNode {
+  color: #000;
+}
+
+.fa-star {
+margin: 0.5em;
+font-size: 24px;
+}
+
+span {
+display: inline-block;
+margin: 0.5em;
+text-align: center;
+background-color: #ccc;
+width: 24px;
+border-radius: 50%;
+cursor: pointer;
+}
+
+
+.selected {
+color: #ddd;
+background-color: #eee;
+cursor: not-allowed;
+}
+
+
+.used {
+color: #99bb99;
+background-color: #aaddaa;
+cursor: not-allowed;
+}
