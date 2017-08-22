@@ -12,7 +12,7 @@ const Button = (props) => {
   switch(props.answerIsCorrect) {
     case true:
     button =
-      <button className="btn btn-success">
+      <button className="btn btn-success" onClick={props.acceptAnswer}>
       <i className="fa fa-check"></i></button>
     break;
     case false:
@@ -48,6 +48,9 @@ return (
 
 const Numbers = (props) => {
 const numbersClassName = (x) => {
+  if(props.usedNumbers.indexOf(x) >= 0){
+    return 'used';
+  }
   if(props.selectedNumbers.indexOf(x) >= 0){
     return 'selected';
   }
@@ -70,23 +73,25 @@ class Game extends React.Component {
   state = {
     selectedNumbers: [],
     randomNumberOfStars: 1 + Math.floor(Math.random()*9),
-    answerIsCorrect: null
+    answerIsCorrect: null,
+    usedNumbers: []
   }
 
 selectNumber = (clickedNumber) => {
  if(this.state.selectedNumbers.indexOf(clickedNumber) >= 0){return;}
  this.setState(prevState => ({
+ answerIsCorrect: null,
  selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
  }));
 };
 
 unselectNumber = (clickedNumber) => {
  this.setState(prevState => ({
+ answerIsCorrect: null,
  selectedNumbers: prevState.selectedNumbers
                           .filter(x => x !== clickedNumber)
  }));
 }
-
 
 checkAnswer = () => {
  this.setState(prevState => ({
@@ -95,10 +100,19 @@ checkAnswer = () => {
  }));
 }
 
+acceptAnswer = () => {
+  this.setState(prevState => ({
+    usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+    selectedNumbers: [],
+    answerIsCorrect: null,
+    randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+  }));
+}
+
  render() {
    const {selectedNumbers,
           randomNumberOfStars,
-          answerIsCorrect} = this.state;
+          answerIsCorrect, usedNumbers} = this.state;
 
    return (
    <div className="container">
@@ -107,13 +121,14 @@ checkAnswer = () => {
      <div className="row">
      <Stars numberOfStars={randomNumberOfStars} />
      <Button answerIsCorrect={answerIsCorrect}
-     checkAnswer={this.checkAnswer} selectedNumbers={selectedNumbers} />
+     checkAnswer={this.checkAnswer} selectedNumbers={selectedNumbers}
+     acceptAnswer={this.acceptAnswer}/>
      <Answer selectedNumbers={selectedNumbers}
      unselectNumber={this.unselectNumber} />
      </div>
      <br />
      <Numbers selectedNumbers={selectedNumbers}
-     selectNumber={this.selectNumber}/>
+     selectNumber={this.selectNumber} usedNumbers={usedNumbers} />
    </div>
   );
  }
