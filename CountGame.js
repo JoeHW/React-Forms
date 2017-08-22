@@ -12,8 +12,9 @@ const Button = (props) => {
   switch(props.answerIsCorrect) {
     case true:
     button =
-      <button className="btn btn-success" onClick={props.acceptAnswer}>
-      <i className="fa fa-check"></i></button>
+      <button disabled={props.redraws === 0}
+      className="btn btn-success" onClick={props.acceptAnswer}>
+      <i className="fa fa-check"></i>{props.redraws}</button>
     break;
     case false:
     button =
@@ -36,8 +37,8 @@ return (
    <div className="col-2 text-center">
      {button}
      <br /><br />
-     <button className="btn btn-warning btn-sm">
-     <i className="fa fa-refresh"></i></button>
+     <button disabled={props.redraws === 0} className="btn btn-warning btn-sm" onClick={props.redraw}>
+     <i className="fa fa-refresh"></i> {props.redraws}</button>
    </div>
 )};
 
@@ -77,7 +78,8 @@ class Game extends React.Component {
     selectedNumbers: [],
     randomNumberOfStars: 1 + Math.floor(Math.random()*9),
     answerIsCorrect: null,
-    usedNumbers: []
+    usedNumbers: [],
+    redraws: 5
   }
 
 selectNumber = (clickedNumber) => {
@@ -112,10 +114,20 @@ acceptAnswer = () => {
   }));
 }
 
+redraw = () => {
+if(this.state.redraws === 0){return;}
+this.setState(prevState => ({
+randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+answerIsCorrect: null,
+selectedNumbers: [],
+redraws: prevState.redraws -1
+}));
+}
+
  render() {
    const {selectedNumbers,
           randomNumberOfStars,
-          answerIsCorrect, usedNumbers} = this.state;
+          answerIsCorrect, usedNumbers, redraws} = this.state;
 
    return (
    <div className="container">
@@ -125,7 +137,7 @@ acceptAnswer = () => {
      <Stars numberOfStars={randomNumberOfStars} />
      <Button answerIsCorrect={answerIsCorrect}
      checkAnswer={this.checkAnswer} selectedNumbers={selectedNumbers}
-     acceptAnswer={this.acceptAnswer}/>
+     acceptAnswer={this.acceptAnswer} redraw={this.redraw} redraws={redraws} />
      <Answer selectedNumbers={selectedNumbers}
      unselectNumber={this.unselectNumber} />
      </div>
