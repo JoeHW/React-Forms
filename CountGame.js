@@ -33,8 +33,11 @@ const Button = (props) => {
          =</button>
 
 return (
-   <div className="col-2">
+   <div className="col-2 text-center">
      {button}
+     <br /><br />
+     <button className="btn btn-warning btn-sm">
+     <i className="fa fa-refresh"></i></button>
    </div>
 )};
 
